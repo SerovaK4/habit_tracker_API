@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 from django.core.validators import MaxValueValidator
 from django.db import models
@@ -27,7 +27,7 @@ class Habit(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь') #создатель привычки
     place = models.CharField(max_length=150, verbose_name="Место") #место, в котором необходимо выполнять привычку
-    time = models.DateTimeField(default=datetime.now(), verbose_name="Время")#время, когда необходимо выполнять привычку
+    time = models.DateTimeField(default=timezone.now, verbose_name="Время")#время, когда необходимо выполнять привычку
     action = models.CharField(max_length=250, verbose_name="Действие") #действие, которое представляет из себя привычка
     is_pleasant = models.BooleanField(default=False, verbose_name="Признак приятной привычки", **NULLABLE) #привычка, которую можно привязать к выполнению полезной привычки
     #related_habit = models.ForeignKey('self', on_delete=models.CASCADE, related_name='Связанная привычка', **NULLABLE) #привычка, которая связана с другой привычкой
