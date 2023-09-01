@@ -16,6 +16,9 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, verbose_name='почта')
     email_verify = models.BooleanField(default=False)
 
+    chat_id = models.CharField(max_length=10, verbose_name='чат',  **NULLABLE)
+
+
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
