@@ -7,7 +7,7 @@ from habit.validators import IsPleasantValidator, PleasantValidator
 class PleasureHabitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Habit
-        fields = ('user', 'place', 'time', 'action', 'pleasant_habit', 'frequency', 'time_to_complete', 'is_public')
+        fields = ('user', 'place', 'time', 'action', 'pleasant_habit', 'frequency', 'time_to_complete', 'is_public', 'pleasant_habit')
 
 
 class HabitSerializers(serializers.ModelSerializer):
@@ -15,12 +15,12 @@ class HabitSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Habit
-        fields = (
-            'user', 'place', 'time', 'action', 'is_pleasant', 'frequency', 'reward', 'time_to_complete', 'is_public')
+        fields = "__all__"
 
 
 class HabitCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Habit
-        fields = "__all__"
+        fields = (
+           'id', 'user', 'place', 'time', 'action', 'is_pleasant_habit', 'frequency', 'reward', 'time_to_complete', 'is_public', 'pleasant_habit')
         validators = [PleasantValidator(fields), IsPleasantValidator(fields='pleasant_habit')]
