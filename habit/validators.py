@@ -31,3 +31,16 @@ class IsPleasantValidator:
         if tmp_pleasant:
             if not tmp_pleasant.is_pleasant_habit:
                 raise ValidationError('Возможно выбрать в связанную привычку только с признаком приятной привычки!')
+
+
+class TimePleasantValidator:
+    """Время выполнения не должно быть больше 120 секунд"""
+
+    def __init__(self, field):
+        self.field = field
+
+    def __call__(self, value):
+        lead_time = dict(value).get(self.field)
+        seconds = lead_time.hour * 3600 + lead_time.minute * 60 +  lead_time.second
+        if seconds > 120:
+            raise ValidationError('Время выполнения не должно превышать 120 сек!')

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from habit.models import Habit
-from habit.validators import IsPleasantValidator, PleasantValidator
+from habit.validators import IsPleasantValidator, PleasantValidator, TimePleasantValidator
 
 
 class PleasureHabitSerializer(serializers.ModelSerializer):
@@ -23,4 +23,5 @@ class HabitCreateSerializer(serializers.ModelSerializer):
         model = Habit
         fields = (
            'id', 'user', 'place', 'time', 'action', 'is_pleasant_habit', 'frequency', 'reward', 'time_to_complete', 'is_public', 'pleasant_habit')
-        validators = [PleasantValidator(fields), IsPleasantValidator(fields='pleasant_habit')]
+        validators = [PleasantValidator(fields), IsPleasantValidator(fields='pleasant_habit'),
+                      TimePleasantValidator(fields='time_to_complete')]

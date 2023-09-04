@@ -33,7 +33,7 @@ class Habit(models.Model):
     is_pleasant_habit = models.BooleanField(default=False, verbose_name="Признак приятной привычки", **NULLABLE)
     frequency = models.PositiveIntegerField(choices=EXECUTION_FREQUENCY, default=1, verbose_name="Периодичность")
     reward = models.CharField(max_length=250, verbose_name="Вознаграждение", **NULLABLE)
-    time_to_complete = models.PositiveIntegerField(default=0, verbose_name="Время на выполнение", validators=[MaxValueValidator(120)])
+    time_to_complete = models.TimeField(verbose_name="Время на выполнение")
     is_public = models.BooleanField(default=False, verbose_name="Признак публичности")
 
     def __str__(self):
