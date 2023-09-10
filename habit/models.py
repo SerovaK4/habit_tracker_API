@@ -1,6 +1,5 @@
 from django.utils import timezone
 
-from django.core.validators import MaxValueValidator
 from django.db import models
 
 from users.models import User

@@ -8,6 +8,7 @@ from habit.models import Habit
 
 """ Отправка сообщения в телеграме"""
 
+
 @shared_task
 def notification_bot():
     habits = Habit.objects.all()
@@ -16,5 +17,3 @@ def notification_bot():
             bot = TeleBot(settings.TELEGRAM_BOT_API_KEY)
             message = f"Трекер привычек напоминает вам о необходимости выполнить {habit.action} в {habit.time} в {habit.place}"
             bot.send_message(habit.user.chat_id, message)
-
-

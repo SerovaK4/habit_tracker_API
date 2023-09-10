@@ -18,7 +18,5 @@ class User(AbstractUser):
 
     chat_id = models.CharField(max_length=10, verbose_name='чат',  **NULLABLE)
 
-
-
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

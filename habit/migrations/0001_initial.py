@@ -8,7 +8,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -21,14 +20,22 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('place', models.CharField(max_length=150, verbose_name='Место')),
-                ('time', models.DateTimeField(default=datetime.datetime(2023, 8, 28, 21, 37, 57, 367609), verbose_name='Время')),
+                ('time', models.DateTimeField(default=datetime.datetime(2023, 8, 28, 21, 37, 57, 367609),
+                                              verbose_name='Время')),
                 ('action', models.CharField(max_length=250, verbose_name='Действие')),
-                ('is_pleasant', models.BooleanField(blank=True, default=False, null=True, verbose_name='Признак приятной привычки')),
-                ('frequency', models.PositiveIntegerField(choices=[(1, 'Один раз в неделю'), (2, 'Два раза в неделю'), (3, 'Три раза в неделю'), (4, 'Четыре раза в неделю'), (5, 'Пять раз в неделю'), (6, 'Шесть раз в неделю'), (7, 'Каждый день')], default=1, verbose_name='Периодичность')),
+                ('is_pleasant',
+                 models.BooleanField(blank=True, default=False, null=True, verbose_name='Признак приятной привычки')),
+                ('frequency', models.PositiveIntegerField(
+                    choices=[(1, 'Один раз в неделю'), (2, 'Два раза в неделю'), (3, 'Три раза в неделю'),
+                             (4, 'Четыре раза в неделю'), (5, 'Пять раз в неделю'), (6, 'Шесть раз в неделю'),
+                             (7, 'Каждый день')], default=1, verbose_name='Периодичность')),
                 ('reward', models.CharField(blank=True, max_length=250, null=True, verbose_name='Вознаграждение')),
-                ('time_to_complete', models.PositiveIntegerField(default=0, validators=[django.core.validators.MaxValueValidator(120)], verbose_name='Время на выполнение')),
+                ('time_to_complete',
+                 models.PositiveIntegerField(default=0, validators=[django.core.validators.MaxValueValidator(120)],
+                                             verbose_name='Время на выполнение')),
                 ('is_public', models.BooleanField(default=False, verbose_name='Признак публичности')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Пользователь')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL,
+                                           verbose_name='Пользователь')),
             ],
             options={
                 'verbose_name': 'Привычка',

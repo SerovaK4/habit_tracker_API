@@ -1,5 +1,4 @@
 from django.urls import reverse
-from rest_framework.test import APITestCase
 from rest_framework import status
 
 from habit.models import Habit
@@ -7,7 +6,7 @@ from users.models import User
 
 from rest_framework.test import APIClient
 from django.test import TestCase
-from django.contrib.auth.models import User
+
 
 class MyAPITests(TestCase):
     def setUp(self):
@@ -19,6 +18,7 @@ class MyAPITests(TestCase):
         self.client.force_authenticate(user=self.user)
         # Получаем URL для обращения к API
         self.url = reverse('my-model-list-api')
+
     def test_api_view_without_authentication(self):
         # Отключаем аутентификацию для тестирования
         self.client.force_authenticate(user=None)

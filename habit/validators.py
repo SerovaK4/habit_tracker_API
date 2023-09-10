@@ -5,7 +5,9 @@ class PleasantValidator:
     def __init__(self, field):
         self.field = field
 
-        """Невозможно Одновременно выбрать связанную привычку и приятную привычку."""
+        """
+            Невозможно выбрать связанную привычку и приятную привычку
+        """
 
     def __call__(self, value):
         tmp_reward = dict(value).get('reward')
@@ -13,10 +15,10 @@ class PleasantValidator:
         tmp_is_pleasant = dict(value).get('is_pleasant_habit')
 
         if tmp_is_pleasant and tmp_reward is not None:
-            raise ValidationError('У приятной привычки не должно быть вознаграждения!')
+            raise ValidationError('У приятной привычки нет вознаграждения!')
 
         if tmp_is_pleasant and tmp_is_related is not None:
-            raise ValidationError('Нельзя одновременно выбирать связанную и приятную привычку!')
+            raise ValidationError('Нельзя выбирать связанную и приятную привычку!')
 
 
 class IsPleasantValidator:
@@ -24,7 +26,9 @@ class IsPleasantValidator:
     def __init__(self, fields):
         self.fields = fields
 
-    """В связанные привычки могут попадать только привычки с признаком приятной привычки.."""
+    """
+        В связанные привычки попадают только привычки с признаком приятной привычки
+    """
 
     def __call__(self, value):
         tmp_pleasant = dict(value).get(self.fields)
@@ -41,6 +45,6 @@ class TimePleasantValidator:
 
     def __call__(self, value):
         lead_time = dict(value).get(self.field)
-        seconds = lead_time.hour * 3600 + lead_time.minute * 60 +  lead_time.second
+        seconds = lead_time.hour * 3600 + lead_time.minute * 60 + lead_time.second
         if seconds > 120:
             raise ValidationError('Время выполнения не должно превышать 120 сек!')
