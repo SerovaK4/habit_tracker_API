@@ -1,10 +1,16 @@
-version: '3' # Версия docker-compose
+version: '3'
 
 services:
   redis:
       image: redis:latest # Docker-образ для Redis
+      container_name: redis_app
+      command: redis-server --save 20 1 --loglevel warning
       ports:
         - "6379:6379" # Проброс портов: 6379 на хосте к 6379 в контейнере
+      volumes:
+          - .data.cache:/data
+      networks:
+              some_network:
 
   web:
     image: nginx:latest # Docker-образ для веб-сервера (здесь используется Nginx)
@@ -16,8 +22,8 @@ services:
   db:
     image: postgres # Docker-образ для PostgreSQL
     environment:
-      - POSTGRES_PASSWORD=mysecretpassword
-      - PGDATA=/var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: mysecretpassword
+      PGDATA: /var/lib/postgresql/data/pgdata
 
     volumes:
       - pg_data:/var/lib/postgresql/data/pgdata # Монтируем volume для сохранения данных
@@ -36,7 +42,8 @@ services:
     build: .
     tty: true
     command:
-      - python3manage.py runserver 0.0.0.0:8000
+      - python3 manage.py migrate
+      - python3 manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000" # Проброс портов: 8000 на хосте к 8000 в контейнере
 
@@ -51,10 +58,17 @@ services:
     volumes:
       - .:/code
 
+    networks:
+      - mynetwork
+
+
   celery:
+    restart: always
     build: .
     tty: true
-    command: celery -A config worker -l INFO
+    container_name: celery
+    command: >
+            bash -c "celery -A config worker --beat --loglevel=info"
     depends_on:
       - redis
       - app # Зависимость от сервиса приложения
@@ -68,5 +82,9 @@ services:
       - app # Зависимость от сервиса приложения
 
 
+
 volumes:
-  postgres-data: # Название volume для PostgreSQL
+  postgres-data:
+networks:
+  app-network:
+    driver: bridge`
