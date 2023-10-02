@@ -10,7 +10,7 @@ services:
       volumes:
           - .data.cache:/data
       networks:
-              some_network:
+        - app-network
 
   web:
     image: nginx:latest # Docker-образ для веб-сервера (здесь используется Nginx)
@@ -19,6 +19,9 @@ services:
     volumes:
       - ./web:/usr/share/nginx/html # Монтируем локальную папку в контейнер
 
+    networks:
+      - app-network
+
   db:
     image: postgres # Docker-образ для PostgreSQL
     environment:
@@ -26,24 +29,26 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
 
     volumes:
-      - pg_data:/var/lib/postgresql/data/pgdata # Монтируем volume для сохранения данных
+      - postgres-data:/var/lib/postgresql/data/pgdata # Монтируем volume для сохранения данных
 
     ports:
       - "5432:5432"
 
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
+
+    networks:
+      - app-network
 
 
   app:
     build: .
     tty: true
     command:
-      - python3 manage.py migrate
-      - python3 manage.py runserver 0.0.0.0:8000
+      - /bin/bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000" # Проброс портов: 8000 на хосте к 8000 в контейнере
 
@@ -59,7 +64,7 @@ services:
       - .:/code
 
     networks:
-      - mynetwork
+      - app-network
 
 
   celery:
@@ -73,6 +78,10 @@ services:
       - redis
       - app # Зависимость от сервиса приложения
 
+    networks:
+      - app-network
+
+
   celery_beat:
     build: .
     tty: true
@@ -81,7 +90,8 @@ services:
       - redis
       - app # Зависимость от сервиса приложения
 
-
+    networks:
+      - app-network
 
 volumes:
   postgres-data:

@@ -88,10 +88,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': "mysecretpassword",
-        'HOST': 'db'
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
+        'HOST': os.getenv('HOST')
     }
 
 # Password validation
